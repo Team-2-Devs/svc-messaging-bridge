@@ -18,7 +18,10 @@ var rabbitUser = RequireEnv("RABBIT_USER");
 var rabbitPass = RequireEnv("RABBIT_PASS");
 
 builder.Services.AddSingleton<IEventPublisher>(_ => new RabbitMQPublisher(rabbitHost, rabbitUser, rabbitPass));
-builder.Services.AddSingleton<IEventConsumer>(_ => new RabbitMQConsumer(rabbitHost, rabbitUser, rabbitPass));
+builder.Services.AddKafkaMessaging(
+    clientId: "svc-messaging-bridge",
+    groupId: "svc-messaging-bridge");
+
 builder.Services.AddHostedService(sp =>
     new KafkaToRabbitWorker(
         sp.GetRequiredService<IMessageConsumer>(),
