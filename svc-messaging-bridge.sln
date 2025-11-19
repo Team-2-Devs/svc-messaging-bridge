@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvcMessagingBridge", "SvcMessagingBridge.csproj", "{EC7C0EE6-330F-1D77-62E8-13A6A3FCEBDB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC7C0EE6-330F-1D77-62E8-13A6A3FCEBDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7C0EE6-330F-1D77-62E8-13A6A3FCEBDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7C0EE6-330F-1D77-62E8-13A6A3FCEBDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7C0EE6-330F-1D77-62E8-13A6A3FCEBDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19BC5379-CD5D-4847-B8E0-E2FD3610D511}
+	EndGlobalSection
+EndGlobal
