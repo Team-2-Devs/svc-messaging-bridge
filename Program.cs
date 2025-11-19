@@ -23,10 +23,6 @@ builder.Services.AddHostedService(sp =>
     new KafkaToRabbitWorker(
         sp.GetRequiredService<IMessageConsumer>(),
         sp.GetRequiredService<IEventPublisher>()));
-builder.Services.AddHostedService(sp =>
-    new RabbitToKafkaWorker(
-        sp.GetRequiredService<IEventConsumer>(),
-        sp.GetRequiredService<IMessageProducer>()));
         
 // Health checks (live/ready)
 builder.Services.AddHealthChecks()
