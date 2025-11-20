@@ -21,7 +21,7 @@ public sealed class KafkaToRabbitWorker : BackgroundService
 
     protected override Task ExecuteAsync(CancellationToken ct)
     {
-        _consumer.Subscribe(Topics.ImageUploaded);
+        _consumer.Subscribe(Topics.ImageUploaded, Topics.RecognitionCompleted);
         return _consumer.RunAsync(HandleAsync, ct);
     }
 
@@ -44,6 +44,5 @@ public sealed class KafkaToRabbitWorker : BackgroundService
             // Forward to RabbitMQ (fanout)
             await _publisher.PublishAsync(Exchanges.RecognitionCompleted, "", evt, ExchangeKind.Fanout, ct: default);
         };
-
     }
 }

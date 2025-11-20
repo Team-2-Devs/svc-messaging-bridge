@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Messaging.RabbitMQ;
 using MessagingBridge.Workers;
 using Messaging.Kafka;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 // Read required environment variables (fail fast if missing)
 static string RequireEnv(string name) =>
@@ -16,8 +19,10 @@ static string RequireEnv(string name) =>
 var rabbitHost = RequireEnv("RABBIT_HOST");
 var rabbitUser = RequireEnv("RABBIT_USER");
 var rabbitPass = RequireEnv("RABBIT_PASS");
+var rabbitPort = int.Parse(RequireEnv("RABBIT_PORT"));
+var kafkaBrokers = RequireEnv("KAFKA_BROKERS");
 
-builder.Services.AddSingleton<IEventPublisher>(_ => new RabbitMQPublisher(rabbitHost, rabbitUser, rabbitPass));
+builder.Services.AddSingleton<IEventPublisher>(_ => new RabbitMQPublisher(rabbitHost, rabbitUser, rabbitPass, rabbitPort));
 builder.Services.AddKafkaMessaging(
     clientId: "svc-messaging-bridge",
     groupId: "svc-messaging-bridge");
@@ -31,7 +36,7 @@ builder.Services.AddHostedService(sp =>
 builder.Services.AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "live" })
     .AddRabbitMQ(
-        serviceProvider => new ConnectionFactory { HostName = rabbitHost, UserName = rabbitUser, Password = rabbitPass }
+        serviceProvider => new ConnectionFactory { HostName = rabbitHost, UserName = rabbitUser, Password = rabbitPass, Port = rabbitPort }
                     .CreateConnectionAsync(),
         name: "rabbitmq",
         tags: new[] { "ready" }
