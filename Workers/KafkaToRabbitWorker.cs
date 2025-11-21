@@ -22,6 +22,7 @@ public sealed class KafkaToRabbitWorker : BackgroundService
     protected override Task ExecuteAsync(CancellationToken ct)
     {
         _consumer.Subscribe(Topics.ImageUploaded, Topics.RecognitionCompleted);
+        System.Console.WriteLine("Subscribed to ImageUploaded and RecognitionCompleted");
         return _consumer.RunAsync(HandleAsync, ct);
     }
 
@@ -31,6 +32,7 @@ public sealed class KafkaToRabbitWorker : BackgroundService
         {
             var evt = JsonSerializer.Deserialize<ImageUploaded>(value, JsonOpts);
             if (evt is null) return;
+            System.Console.WriteLine("Received ImageUploaded");
 
             // Forward to RabbitMQ (fanout)
             await _publisher.PublishAsync(Exchanges.ImageUploaded, "", evt, ExchangeKind.Fanout, ct: default);
@@ -40,6 +42,8 @@ public sealed class KafkaToRabbitWorker : BackgroundService
         {
             var evt = JsonSerializer.Deserialize<RecognitionCompleted>(value, JsonOpts);
             if (evt is null) return;
+
+            System.Console.WriteLine("Received RecognitionCompleted");
 
             // Forward to RabbitMQ (fanout)
             await _publisher.PublishAsync(Exchanges.RecognitionCompleted, "", evt, ExchangeKind.Fanout, ct: default);
