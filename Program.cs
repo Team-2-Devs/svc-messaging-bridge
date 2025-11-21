@@ -22,6 +22,8 @@ var rabbitPass = RequireEnv("RABBIT_PASS");
 var rabbitPort = int.Parse(RequireEnv("RABBIT_PORT"));
 var kafkaBrokers = RequireEnv("KAFKA_BROKERS");
 
+Console.WriteLine($"[Bridge] RabbitMQ: host={rabbitHost}, port={rabbitPort}, user={rabbitUser}");
+
 builder.Services.AddSingleton<IEventPublisher>(_ => new RabbitMQPublisher(rabbitHost, rabbitUser, rabbitPass, rabbitPort));
 builder.Services.AddKafkaMessaging(
     clientId: "svc-messaging-bridge",

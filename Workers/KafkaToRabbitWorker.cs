@@ -32,8 +32,7 @@ public sealed class KafkaToRabbitWorker : BackgroundService
         {
             var evt = JsonSerializer.Deserialize<ImageUploaded>(value, JsonOpts);
             if (evt is null) return;
-            System.Console.WriteLine("Received ImageUploaded");
-
+            System.Console.WriteLine($"Received ImageUploaded, {evt}");
             // Forward to RabbitMQ (fanout)
             await _publisher.PublishAsync(Exchanges.ImageUploaded, "", evt, ExchangeKind.Fanout, ct: default);
         };
@@ -43,8 +42,7 @@ public sealed class KafkaToRabbitWorker : BackgroundService
             var evt = JsonSerializer.Deserialize<RecognitionCompleted>(value, JsonOpts);
             if (evt is null) return;
 
-            System.Console.WriteLine("Received RecognitionCompleted");
-
+            System.Console.WriteLine($"Received RecognitionCompleted, {evt}");
             // Forward to RabbitMQ (fanout)
             await _publisher.PublishAsync(Exchanges.RecognitionCompleted, "", evt, ExchangeKind.Fanout, ct: default);
         };
